@@ -7,6 +7,7 @@ import File from "./File.js";
 import chalkAnimation from "chalk-animation";
 import figlet from "figlet";
 import { writeFileSync } from "fs";
+import beautify from "js-beautify";
 
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 
@@ -63,8 +64,11 @@ const main = async () => {
 
   await analyzed!.checkLinks();
 
-  if (argv.s)
-    writeFileSync("lnkchkr-result.json", JSON.stringify(analyzed!.deadLinks));
+  if (argv.s) {
+    const options = { indent_size: 2, space_in_empty_paren: true };
+    const json = JSON.stringify(analyzed!.deadLinks);
+    writeFileSync("lnkchkr-result.json", beautify(json, options));
+  }
 };
 
 main();

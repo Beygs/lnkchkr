@@ -18,6 +18,7 @@
     "@types/chalk-animation": "^1.6.1",
     "@types/figlet": "^1.5.5",
     "@types/glob": "^8.0.0",
+    "@types/js-beautify": "^1.13.3",
     "@types/node": "^18.11.7",
     "@types/yargs": "^17.0.13",
     "gulp": "^4.0.2",
@@ -30,6 +31,7 @@
     "chalk-animation": "^2.0.3",
     "figlet": "^1.5.2",
     "glob": "^8.0.3",
+    "js-beautify": "^1.14.7",
     "node-fetch": "^3.2.10",
     "yargs": "^17.6.0"
   },
