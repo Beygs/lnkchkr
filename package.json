@@ -1,18 +1,21 @@
 {
   "name": "lnkchkr",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CLI tool to hunt dead links",
   "main": "./build/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "pnpm build && pnpm start"
   },
   "bin": "./build/index.js",
   "author": "Beygs",
   "license": "ISC",
   "devDependencies": {
+    "@types/chalk-animation": "^1.6.1",
+    "@types/figlet": "^1.5.5",
     "@types/glob": "^8.0.0",
     "@types/node": "^18.11.7",
     "@types/yargs": "^17.0.13",
@@ -20,6 +23,8 @@
   },
   "dependencies": {
     "chalk": "^5.1.2",
+    "chalk-animation": "^2.0.3",
+    "figlet": "^1.5.2",
     "glob": "^8.0.3",
     "node-fetch": "^3.2.10",
     "yargs": "^17.6.0"

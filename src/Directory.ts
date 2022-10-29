@@ -7,12 +7,12 @@ class Directory {
   }
 
   #checkFiles() {
-    glob(`${this.path}/**/*`, { nodir: true }, (err, res) => {
+    glob(`${this.path}/**/*`, { nodir: true }, async (err, res) => {
       if (err) throw err;
-      res.forEach((path) => {
+      for (const path of res) {
         const file = new File(path);
-        file.checkLinks();
-      });
+        await file.checkLinks();
+      }
     });
   }
 }

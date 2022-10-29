@@ -12,7 +12,18 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import Directory from "./Directory.js";
 import File from "./File.js";
+import chalkAnimation from "chalk-animation";
+import figlet from "figlet";
+const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    console.clear();
+    let title;
+    figlet.text("LNKCHKR", { font: "Banner3" }, (err, data) => {
+        const text = data !== null && data !== void 0 ? data : "LNKCHKR";
+        title = chalkAnimation.glitch(text, 2);
+    });
+    yield sleep();
+    title.stop();
     const argv = yield yargs(hideBin(process.argv))
         .options({
         d: {
