@@ -2,6 +2,7 @@
   "name": "lnkchkr",
   "version": "1.0.3",
   "description": "CLI tool to hunt dead links",
+  "repository": "https://github.com/Beygs/lnkchkr",
   "main": "./build/index.js",
   "type": "module",
   "scripts": {
