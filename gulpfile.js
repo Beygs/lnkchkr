@@ -1,4 +1,3 @@
-
 import gulp from "gulp";
 const { dest, src } = gulp;
 import ts from "gulp-typescript";
@@ -10,8 +9,8 @@ const compileTs = () => {
   return src("./src/**/*.ts")
     .pipe(tsProject())
     .pipe(uglify())
-    .pipe(dest("./build"))
-}
+    .pipe(dest("./build"));
+};
 
 const defaultTask = compileTs;
 
