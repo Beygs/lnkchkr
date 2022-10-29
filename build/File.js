@@ -22,7 +22,7 @@ class File {
         _File_instances.add(this);
         this.content = __classPrivateFieldGet(this, _File_instances, "m", _File_getContent).call(this);
         this.links = [];
-        this.clear = true;
+        this.deadLinks = { file: path, deadLinks: [] };
         __classPrivateFieldGet(this, _File_instances, "m", _File_findLinks).call(this);
     }
     checkLinks() {
@@ -32,8 +32,9 @@ class File {
                 yield __classPrivateFieldGet(this, _File_instances, "m", _File_checkLink).call(this, link);
             }
             console.log(`✔️ ${chalk.green(this.path)} analyzed.`);
-            if (this.clear)
+            if (this.deadLinks.deadLinks.length === 0)
                 console.log(`🎉 No dead link found in file ${chalk.green(this.path)}!`);
+            return this.deadLinks;
         });
     }
 }
@@ -48,9 +49,8 @@ _File_instances = new WeakSet(), _File_getContent = function _File_getContent() 
             const data = yield fetch(link[0]);
             if (data.status !== 200) {
                 console.log(`💀 Dead link found in file ${chalk.green(this.path)}: ${chalk.blue(link[0])} (status ${chalk.yellow(data.status)})`);
-                this.clear = false;
+                this.deadLinks.deadLinks.push(link[0]);
             }
-            setTimeout(() => { }, 1000);
         }
         catch (err) {
             console.log(err);

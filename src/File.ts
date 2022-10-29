@@ -5,12 +5,12 @@ import fetch from "node-fetch";
 class File {
   content: string;
   links: RegExpMatchArray[];
-  clear: boolean;
+  deadLinks: { file: string, deadLinks: string[]};
 
   constructor(public path: string) {
     this.content = this.#getContent();
     this.links = [];
-    this.clear = true;
+    this.deadLinks = { file: path, deadLinks: []};
 
     this.#findLinks();
   }
@@ -29,9 +29,8 @@ class File {
       const data = await fetch(link[0]);
       if (data.status !== 200) {
         console.log(`💀 Dead link found in file ${chalk.green(this.path)}: ${chalk.blue(link[0])} (status ${chalk.yellow(data.status)})`);
-        this.clear = false;
+        this.deadLinks.deadLinks.push(link[0]);
       }
-      setTimeout(() => {}, 1000);
     } catch (err) {
       console.log(err);
     }
@@ -43,7 +42,8 @@ class File {
       await this.#checkLink(link);
     }
     console.log(`✔️ ${chalk.green(this.path)} analyzed.`)
-    if (this.clear) console.log(`🎉 No dead link found in file ${chalk.green(this.path)}!`)
+    if (this.deadLinks.deadLinks.length === 0) console.log(`🎉 No dead link found in file ${chalk.green(this.path)}!`);
+    return this.deadLinks;
   }
 }
 

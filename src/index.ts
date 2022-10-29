@@ -6,6 +6,7 @@ import Directory from "./Directory.js";
 import File from "./File.js";
 import chalkAnimation from "chalk-animation";
 import figlet from "figlet";
+import { writeFileSync } from "fs";
 
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 
@@ -37,19 +38,26 @@ const main = async () => {
         describe: "File to check",
         type: "string",
       },
+      s: {
+        demandOption: false,
+        alias: "save",
+        describe: "Save result to a file",
+        type: "boolean",
+      }
     })
     .help()
     .strict()
     .alias("help", "h").argv;
 
-  if (argv.f) {
-    const file = new File(argv.f);
-    file.checkLinks();
-  }
+  let analyzed: File | Directory;
 
-  if (argv.d) {
-    const directory = new Directory(argv.d);
-  }
+  if (argv.f) analyzed = new File(argv.f);
+
+  if (argv.d) analyzed = new Directory(argv.d);
+
+  await analyzed!.checkLinks();
+
+  if (argv.s) writeFileSync("lnkchkr-result.json", JSON.stringify(analyzed!.deadLinks));
 };
 
 main();
