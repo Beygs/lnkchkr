@@ -49,7 +49,7 @@ _File_instances = new WeakSet(), _File_getContent = function _File_getContent() 
             const data = yield fetch(link[0]);
             if (data.status !== 200) {
                 console.log(`💀 Dead link found in file ${chalk.green(this.path)}: ${chalk.blue(link[0])} (status ${chalk.yellow(data.status)})`);
-                this.deadLinks.deadLinks.push(link[0]);
+                this.deadLinks.deadLinks.push({ url: link[0], status: data.status });
             }
         }
         catch (err) {

@@ -3,7 +3,7 @@ import File from "./File.js";
 
 class Directory {
   files: File[];
-  deadLinks: { file: string; deadLinks: string[] }[];
+  deadLinks: { file: string; deadLinks: { url: string; status: number }[] }[];
 
   constructor(public path: string) {
     this.files = this.#getFiles();
@@ -19,8 +19,7 @@ class Directory {
   async checkLinks() {
     for (const file of this.files) {
       const result = await file.checkLinks();
-      if (result.deadLinks.length > 0)
-        this.deadLinks.push(result);
+      if (result.deadLinks.length > 0) this.deadLinks.push(result);
     }
   }
 }
