@@ -16,8 +16,9 @@ var _Directory_instances, _Directory_getFiles;
 import glob from "glob";
 import File from "./File.js";
 class Directory {
-    constructor(path) {
+    constructor(path, mark) {
         this.path = path;
+        this.mark = mark;
         _Directory_instances.add(this);
         this.files = __classPrivateFieldGet(this, _Directory_instances, "m", _Directory_getFiles).call(this);
         this.deadLinks = [];
@@ -34,6 +35,6 @@ class Directory {
 }
 _Directory_instances = new WeakSet(), _Directory_getFiles = function _Directory_getFiles() {
     const files = glob.sync(`${this.path}/**/*`, { nodir: true });
-    return files.map((path) => new File(path));
+    return files.map((path) => new File(path, this.mark));
 };
 export default Directory;

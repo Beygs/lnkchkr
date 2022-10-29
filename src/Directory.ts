@@ -5,7 +5,7 @@ class Directory {
   files: File[];
   deadLinks: { file: string; deadLinks: { url: string; status: number }[] }[];
 
-  constructor(public path: string) {
+  constructor(public path: string, public mark?: boolean) {
     this.files = this.#getFiles();
     this.deadLinks = [];
   }
@@ -13,7 +13,7 @@ class Directory {
   #getFiles() {
     const files = glob.sync(`${this.path}/**/*`, { nodir: true });
 
-    return files.map((path) => new File(path));
+    return files.map((path) => new File(path, this.mark));
   }
 
   async checkLinks() {

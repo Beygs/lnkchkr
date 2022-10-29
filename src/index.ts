@@ -43,7 +43,13 @@ const main = async () => {
         alias: "save",
         describe: "Save result to a file",
         type: "boolean",
-      }
+      },
+      m: {
+        demandOption: false,
+        alias: "mark",
+        describe: "Mark dead links in files",
+        type: "boolean",
+      },
     })
     .help()
     .strict()
@@ -51,13 +57,14 @@ const main = async () => {
 
   let analyzed: File | Directory;
 
-  if (argv.f) analyzed = new File(argv.f);
+  if (argv.f) analyzed = new File(argv.f, argv.m);
 
-  if (argv.d) analyzed = new Directory(argv.d);
+  if (argv.d) analyzed = new Directory(argv.d, argv.m);
 
   await analyzed!.checkLinks();
 
-  if (argv.s) writeFileSync("lnkchkr-result.json", JSON.stringify(analyzed!.deadLinks));
+  if (argv.s)
+    writeFileSync("lnkchkr-result.json", JSON.stringify(analyzed!.deadLinks));
 };
 
 main();

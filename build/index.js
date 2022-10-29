@@ -44,16 +44,22 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             alias: "save",
             describe: "Save result to a file",
             type: "boolean",
-        }
+        },
+        m: {
+            demandOption: false,
+            alias: "mark",
+            describe: "Mark dead links in files",
+            type: "boolean",
+        },
     })
         .help()
         .strict()
         .alias("help", "h").argv;
     let analyzed;
     if (argv.f)
-        analyzed = new File(argv.f);
+        analyzed = new File(argv.f, argv.m);
     if (argv.d)
-        analyzed = new Directory(argv.d);
+        analyzed = new Directory(argv.d, argv.m);
     yield analyzed.checkLinks();
     if (argv.s)
         writeFileSync("lnkchkr-result.json", JSON.stringify(analyzed.deadLinks));

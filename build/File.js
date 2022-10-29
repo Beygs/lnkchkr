@@ -14,11 +14,12 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _File_instances, _File_getContent, _File_findLinks, _File_checkLink;
 import chalk from "chalk";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import fetch from "node-fetch";
 class File {
-    constructor(path) {
+    constructor(path, mark) {
         this.path = path;
+        this.mark = mark;
         _File_instances.add(this);
         this.content = __classPrivateFieldGet(this, _File_instances, "m", _File_getContent).call(this);
         this.links = [];
@@ -34,6 +35,8 @@ class File {
             console.log(`✔️ ${chalk.green(this.path)} analyzed.`);
             if (this.deadLinks.deadLinks.length === 0)
                 console.log(`🎉 No dead link found in file ${chalk.green(this.path)}!`);
+            if (this.mark && this.deadLinks.deadLinks.length > 0)
+                writeFileSync(this.path, this.content);
             return this.deadLinks;
         });
     }
@@ -50,6 +53,8 @@ _File_instances = new WeakSet(), _File_getContent = function _File_getContent() 
             if (data.status !== 200) {
                 console.log(`💀 Dead link found in file ${chalk.green(this.path)}: ${chalk.blue(link[0])} (status ${chalk.yellow(data.status)})`);
                 this.deadLinks.deadLinks.push({ url: link[0], status: data.status });
+                if (this.mark)
+                    this.content = this.content.replace(link[0], (match) => `<!---lnkchkr-deadlink-${data.status}-->${match}`);
             }
         }
         catch (err) {
